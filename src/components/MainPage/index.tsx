@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import placeholder from "../../assets/got-placeholder.jpeg";
+import { getTwentyRandomGames } from "../../api";
+import {cleanAllGamesFetchData} from "../../utilities";
 
 const MainPage: React.FC = () => {
+  const [games, setGames] = useState<Array<object>>([])
+
+useEffect(() => {
+  getTwentyRandomGames()
+    .then(data => {
+      const cleanedData = cleanAllGamesFetchData(data.results);
+      setGames(cleanedData)
+    })
+}, [])
 
   const cardInfo = [
     { image: placeholder, title: "Lebron James", text: "Wanna be Goat" },
@@ -10,6 +21,8 @@ const MainPage: React.FC = () => {
     { image: placeholder, title: "Nikola Jokic", text: "GOAT" },
     { image: placeholder, title: "Aaron Gordon", text: "2nd GOAT" },
   ];
+
+  
 
   const renderCard = (
     card: { image: string; title: string; text: string },
@@ -30,7 +43,10 @@ const MainPage: React.FC = () => {
   };
 
   return (
-    <div>{cardInfo.map(renderCard)}</div>
+    <div className="card-deck">
+      {games.length && console.log(games)}
+      {cardInfo.map(renderCard)}
+    </div>
   )
 };
 
