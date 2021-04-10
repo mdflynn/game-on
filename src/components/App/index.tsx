@@ -1,9 +1,11 @@
 import React from 'react';
 import './App.scss';
+// Components
+import MainPage from "../MainPage";
 
 const App = () => {
   return (
-   <h1>gameOn</h1>
+   <MainPage />
   );
 }
 
