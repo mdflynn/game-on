@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import "./MainPage.scss";
 import { Button, Card } from "react-bootstrap";
-import placeholder from "../../assets/got-placeholder.jpeg";
 import { getTwentyRandomGames } from "../../api";
 import {cleanAllGamesFetchData} from "../../utilities";
 
+import { CleanedFetchData } from "../../interfaces";
+
 const MainPage: React.FC = () => {
-  const [games, setGames] = useState<Array<object>>([])
+  const [games, setGames] = useState<Array<CleanedFetchData>>([])
 
 useEffect(() => {
   getTwentyRandomGames()
@@ -15,37 +17,32 @@ useEffect(() => {
     })
 }, [])
 
-  const cardInfo = [
-    { image: placeholder, title: "Lebron James", text: "Wanna be Goat" },
-    { image: placeholder, title: "James Harden", text: "Not a Goat" },
-    { image: placeholder, title: "Nikola Jokic", text: "GOAT" },
-    { image: placeholder, title: "Aaron Gordon", text: "2nd GOAT" },
-  ];
-
-  
-
   const renderCard = (
-    card: { image: string; title: string; text: string },
+    card: CleanedFetchData,
     index: number
   ) => {
     return (
-      <Card style={{ width: "18rem" }} key={index}>
-        <Card.Img variant="top" src={card.image} />
+      <div className="row">
+        <div className="col-sm-6">
+        <Card style={{ width: "18rem" }} key={index}>
+        <Card.Img variant="top" src={card.background_image} />
         <Card.Body>
-          <Card.Title>{card.title}</Card.Title>
+          <Card.Title>{card.name}</Card.Title>
           <Card.Text>
-            {card.text}
+            Metacritic: {card.metacritic}
           </Card.Text>
           <Button variant="primary">Game Details</Button>
         </Card.Body>
       </Card>
+        </div>
+      </div>
     );
   };
 
   return (
     <div className="card-deck">
       {games.length && console.log(games)}
-      {cardInfo.map(renderCard)}
+      {games.map(renderCard)}
     </div>
   )
 };
